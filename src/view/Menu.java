@@ -1,6 +1,6 @@
 package view;
 
-import model.User;
+/*import model.Reader;
 import service.MainService;
 
 import java.util.Scanner;
@@ -93,7 +93,7 @@ public class Menu {
                 System.out.println("Введите пароль");
                 String password = scanner.nextLine();
 
-                User user = service.registerUser(email, password);
+                Reader user = service.registerReader(email, password);
 
                 if (user != null) {
                     System.out.println("Вы успешно зарегистрировались в системе");
@@ -122,3 +122,5 @@ public class Menu {
 
 
 }
+
+ */
