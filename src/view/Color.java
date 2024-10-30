@@ -1,5 +1,8 @@
 package view;
 
+/**
+ * Интерфейс с ANSI-кодами цветов для консольного вывода.
+ */
 public interface Color {
     public final static String COLOR_BLACK = "\u001B[0m";
 

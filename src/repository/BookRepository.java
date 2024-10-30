@@ -3,24 +3,31 @@ package repository;
 import model.Book;
 import utils.MyList;
 
+/**
+ * Интерфейс репозитория книг
+ */
 public interface BookRepository {
-    // Create - add
+    // Добавление книги
     void addBook(String title, String author);
 
-    // READ
-    // получить список всех книг
+    // Получение списка всех книг
     MyList<Book> getAllBooks();
 
-    // Получить список книг по автору
+    // Получение списка книг по автору
     MyList<Book> getBooksByAuthor(String author);
 
-
-    // Получить список книг по названию
+    // Получение списка книг по названию
     MyList<Book> getBooksByTitle(String title);
 
-    // Получить список свободных книг
+    // Получение списка доступных книг
     MyList<Book> getAllAvailableBooks();
 
-    // Delete
+    // Удаление книги
     void deleteBook(Book book);
+
+    // Сортировка книг по названию
+    void sortByTitle();
+
+    // Сортировка книг по автору
+    void sortByAuthor();
 }
