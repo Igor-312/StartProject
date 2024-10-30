@@ -2,6 +2,7 @@ package service;
 
 import model.Book;
 import model.Reader;
+import model.Role;
 import repository.BookRepository;
 import repository.ReaderRepository;
 import utils.MyList;
@@ -53,12 +54,13 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void registerReader(String name, String email, String roleStr) {
-
+        Role role = Role.valueOf(roleStr.toUpperCase()); // Преобразуем строку роли в тип Role
+        readerRepository.addReader(name, email, role);
     }
 
     @Override
     public Reader authenticateReader(String name) {
-        return null;
+        return readerRepository.getReaderByName(name);
     }
 
     @Override
