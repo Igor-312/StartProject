@@ -5,7 +5,9 @@ import model.Role;
 import utils.MyArrayList;
 import utils.MyList;
 
-
+/**
+ * Реализация репозитория читателей
+ */
 public class ReaderRepositoryImpl implements ReaderRepository {
 
     private final MyList<Reader> readers;
@@ -31,9 +33,9 @@ public class ReaderRepositoryImpl implements ReaderRepository {
         }
         return null;
     }
+
     @Override
     public MyList<Reader> getReaders() {
-        return  readers;
+        return readers;
     }
-
 }
