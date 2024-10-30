@@ -2,49 +2,34 @@ package model;
 
 import utils.MyList;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Book {
 
-        private String id;
-        private String title; // Название
-        private String author;
-        private boolean isAvailable = true; // Свободна ли книга
+    private String title; // Название
+    private String author;
+    private boolean isAvailable = true; // Свободна ли книга
+    private LocalDate borrowedDate;
 
 
-    public Book(String id, String title, String author,
-                boolean isAvailable) {
-        this.id = id;
+    public Book(String title, String author) {
         this.title = title;
         this.author = author;
-        this.isAvailable = isAvailable;
-
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Book book)) return false;
-        return Objects.equals(id, book.id);
+    public LocalDate getBorrowedDate() {
+        return borrowedDate;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
+    public void setBorrowedDate(LocalDate borrowedDate) {
+        this.borrowedDate = borrowedDate;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", isAvailable=" + isAvailable +
-                '}';
-    }
-
-    public String getId() {
-        return id;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getTitle() {
@@ -65,6 +50,11 @@ public class Book {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+    public long daysBorrowed() {
+        if (borrowedDate == null) return 0;
+        return ChronoUnit.DAYS.between(borrowedDate, LocalDate.now());
     }
 
 }
