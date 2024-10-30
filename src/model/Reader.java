@@ -3,8 +3,6 @@ package model;
 import utils.MyArrayList;
 import utils.MyList;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Reader {
     // Реализация метода:
