@@ -4,83 +4,38 @@ import model.Book;
 import model.Reader;
 import utils.MyList;
 
-/**
- * Интерфейс сервисного слоя библиотеки
- */
 public interface LibraryService {
-
-    /**
-     * Добавить книгу в библиотеку
-     */
+    //Добавить книгу в библиотеку
     void addBook(String title, String author);
-
-    /**
-     * Получить список всех книг
-     */
+    //READ
+    //Получить список всех книг
     MyList<Book> getAllBooks();
-
-    /**
-     * Поиск книг по названию (частичное совпадение)
-     */
+    //Получить список книг по названию
     MyList<Book> searchBooksByTitle(String title);
-
-    /**
-     * Поиск книг по автору (частичное совпадение)
-     */
+    //Получить список книг по автору
     MyList<Book> searchBooksByAuthor(String author);
-
-    /**
-     * Взять книгу из библиотеки
-     */
+    //Взять книгу из библиотеки
     boolean borrowBook(String bookTitle, String readerName);
-
-    /**
-     * Вернуть книгу в библиотеку
-     */
+    //Вернуть книгу в библиотеку
     boolean returnBook(String bookTitle, String readerName);
 
-    /**
-     * Получить список всех доступных книг
-     */
-    MyList<Book> getAllAvailableBooks();
-
-    /**
-     * Получить список всех занятых книг
-     */
+    //Получить список всех занятых книг
     MyList<Book> getAllBorrowedBooks();
 
-    /**
-     * Зарегистрировать нового читателя
-     */
+    //Зарегистрировать нового читателя
     void registerReader(String name, String email, String roleStr);
-
-    /**
-     * Авторизовать читателя по имени
-     */
+    //Авторизировать читателя по имени
     Reader authenticateReader(String name);
-
-    /**
-     * Получить список книг, взятых читателем
-     */
+    //Получить список занятых книг, взятых читателем
     MyList<Book> getBooksBorrowedByReader(String readerName);
-
-    /**
-     * Редактировать информацию о книге (только для ADMIN)
-     */
+    //Редактировать информацию о книге,только ADMIN
     boolean editBook(String oldTitle, String newTitle, String newAuthor, Reader admin);
-
-    /**
-     * Узнать, кто взял книгу
-     */
+    //Узнать кто взял книгу
     Reader getBookBorrower(String bookTitle);
-
-    /**
-     * Сортировка книг по названию
-     */
+    //Сортировка книга по названию
     void sortBooksByTitle();
+    //Сортировка книг по автору
+    void  sortBooksByAuthor();
 
-    /**
-     * Сортировка книг по автору
-     */
-    void sortBooksByAuthor();
+    MyList<Book> getAllAvailableBooks();
 }
