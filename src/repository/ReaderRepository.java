@@ -1,13 +1,14 @@
 package repository;
 
 import model.Reader;
+import model.Role;
+import utils.MyList;
 
 public interface ReaderRepository {
 
-    Reader addReader(int id, String name, String email);
+    Reader addReader(String name, String email, Role role);
 
-    boolean isTitleExist(String name); // Возвращает всех пользователей
+    Reader getReaderByName(String name);
 
-    Reader getReaderByTitle(String name);
-
+    MyList<Reader> getAllReaders;
 }
