@@ -37,4 +37,5 @@ public interface LibraryService {
     //Сортировка книг по автору
     void  sortBooksByAuthor();
 
+    MyList<Book> getAllAvailableBooks();
 }

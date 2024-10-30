@@ -86,6 +86,11 @@ public class LibraryServiceImpl implements LibraryService {
 
     }
 
+    @Override
+    public MyList<Book> getAllAvailableBooks() {
+        return bookRepository.getAllAvailableBooks();
+    }
+
 
     //Вспомогательный метод для поиска книги по названию
     private Book findBookByTitle(String title) {
