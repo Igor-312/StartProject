@@ -8,6 +8,7 @@ import repository.ReaderRepositoryImpl;
 import service.LibraryService;
 import service.LibraryServiceImpl;
 import utils.MyList;
+import utils.Validator;
 
 import java.util.Scanner;
 
@@ -23,6 +24,8 @@ public class MainApp {
     private static LibraryService libraryService;
 
     private static Reader currentReader;
+
+    private static Validator validator = new Validator();
 
     public static void main(String[] args) {
 
@@ -54,15 +57,15 @@ public class MainApp {
         libraryService.addBook("Im Westen nichts Neues", "Erich Maria Remarque");
 
         // Главные администраторы
-        libraryService.registerReader("Bogdan", "bogdan@example.com", "ADMIN");
-        libraryService.registerReader("Igor", "igor@example.com", "ADMIN");
-        libraryService.registerReader("Elena", "elena@example.com", "ADMIN");
-        libraryService.registerReader("Svitlana", "svitlana@example.com", "ADMIN");
+        libraryService.registerReader("Bogdan", "bogdan@example.com", "123", "ADMIN");
+        libraryService.registerReader("Igor", "igor@example.com","123", "ADMIN");
+        libraryService.registerReader("Elena", "elena@example.com","123", "ADMIN");
+        libraryService.registerReader("Svitlana", "svitlana@example.com","123", "ADMIN");
 
         // зарегистрированные пользователи библиотеки
-        libraryService.registerReader("admin", "admin@example.com", "ADMIN");
-        libraryService.registerReader("Ivan", "ivan@example.com", "READER");
-        libraryService.registerReader("Maria", "maria@example.com", "READER");
+        libraryService.registerReader("admin", "admin@example.com","123", "ADMIN");
+        libraryService.registerReader("Ivan", "ivan@example.com","123", "READER");
+        libraryService.registerReader("Maria", "maria@example.com","123", "READER");
 
 
 
@@ -71,7 +74,7 @@ public class MainApp {
 
         while (true) {
             if (currentReader == null) {
-                System.out.println("Добро пожаловать в библиотеку!");
+                System.out.println("Добро пожаловать в библиотеку \"Знания Века\"!");
                 System.out.print("Пожалуйста, введите ваше имя для авторизации, используя латинские буквы: ");
 
                 String name = scanner.nextLine();
@@ -79,10 +82,25 @@ public class MainApp {
                 if (currentReader == null) {
                     System.out.print("Пользователь не найден. Желаете зарегистрироваться? (да/нет): ");
                     String answer = scanner.nextLine();
-                    if (answer.equalsIgnoreCase("да")) {
+                    if (answer.equalsIgnoreCase("да") || answer.equalsIgnoreCase("yes")) {
                         System.out.print("Введите ваш email: ");
                         String email = scanner.nextLine();
-                        libraryService.registerReader(name, email, "READER");
+                        while(!validator.isValidEmail(email)) {
+                            System.out.println("\"Ваш email " +
+                                    "должен содержать латинские буквы, цифры, символ '@' и домен, например, " +
+                                    "'name@example.com'.\" ");
+                            System.out.print("Введите ваш email: ");
+                            email = scanner.nextLine();
+                        }
+                        System.out.print("Введите ваш password: ");
+                        String password = scanner.nextLine();
+                        while(!validator.isValidPassword(password)) {
+                            System.out.println("Ваш пароль должен содержать минимум 8 символов, хотя бы одна заглавная и " +
+                                    "строчная буква, хотя бы одна цифра и один спецсимвол, например: @, #, $.");
+                            System.out.print("Введите ваш password: ");
+                            password = scanner.nextLine();
+                        }
+                        libraryService.registerReader(name, email, password, "READER");
                         currentReader = libraryService.authenticateReader(name);
                         System.out.println("Регистрация успешна!");
                     } else {

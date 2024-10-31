@@ -23,15 +23,6 @@ public class Reader {
         this.borrowedBooks = new MyArrayList<>();
     }
 
-    public Reader(int id, String name, String email, Role role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = "";
-        this.role = role;
-        this.borrowedBooks = new MyArrayList<>();
-    }
-
     // Геттеры и сеттеры
     public String getName() {
         return name;

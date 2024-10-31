@@ -88,14 +88,14 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void registerReader(String name, String email, String roleStr) {
+    public void registerReader(String name, String email, String password, String roleStr) {
         Role role;
         try {
             role = Role.valueOf(roleStr.toUpperCase());
         } catch (IllegalArgumentException e) {
             role = Role.READER;
         }
-        readerRepository.addReader(name, email, role);
+        readerRepository.addReader(name, email, password, role);
     }
 
     @Override

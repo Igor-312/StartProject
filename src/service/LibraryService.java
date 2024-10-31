@@ -26,7 +26,7 @@ public interface LibraryService {
     MyList<Book> getAllBorrowedBooks();
 
     //Зарегистрировать нового читателя
-    void registerReader(String name, String email, String roleStr);
+    void registerReader(String name, String email, String password, String roleStr);
     //Авторизировать читателя по имени
     Reader authenticateReader(String name);
     //Получить список занятых книг, взятых читателем
