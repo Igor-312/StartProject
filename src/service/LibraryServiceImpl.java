@@ -10,7 +10,7 @@ import utils.MyList;
 
 import java.time.LocalDate;
 
-// Реализация сервисного слоя библиотеки
+// Service библиотеки
 public class LibraryServiceImpl implements LibraryService {
     private final BookRepository bookRepository;
     private final ReaderRepository readerRepository;

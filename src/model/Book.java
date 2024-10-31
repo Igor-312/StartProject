@@ -1,36 +1,40 @@
 package model;
 
-import utils.MyList;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+/**
+ * Класс, представляющий книгу в библиотеке.
+ */
 public class Book {
 
-    private String title; // Название
-    private String author;
-    private boolean isAvailable = true; // Свободна ли книга
-    private LocalDate borrowedDate;
-
+    private String title; // Название книги
+    private String author; // Автор книги
+    private boolean isAvailable = true; // Доступна ли книга для выдачи
+    private LocalDate borrowedDate; // Дата, когда книга была взята
 
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
     }
 
+    // Переопределение метода equals для корректного сравнения объектов Book
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Book book)) return false;
+        if (o == null || getClass() != o.getClass()) return false; // Исправлено для лучшей проверки
+        Book book = (Book) o;
         return Objects.equals(title, book.title) && Objects.equals(author, book.author);
     }
 
+    // Переопределение метода hashCode
     @Override
     public int hashCode() {
-        return Objects.hashCode(title);
+        return Objects.hash(title, author);
     }
 
+    // Переопределение метода toString для удобного вывода информации о книге
     @Override
     public String toString() {
         return "Book{" +
@@ -41,6 +45,7 @@ public class Book {
                 '}';
     }
 
+    // Геттеры и сеттеры
     public LocalDate getBorrowedDate() {
         return borrowedDate;
     }
@@ -73,11 +78,12 @@ public class Book {
         isAvailable = available;
     }
 
+    /**
+     * Вычисляет количество дней, в течение которых книга находится у читателя.
+     * @return количество дней или 0, если книга не была взята.
+     */
     public long daysBorrowed() {
         if (borrowedDate == null) return 0;
         return ChronoUnit.DAYS.between(borrowedDate, LocalDate.now());
     }
-
 }
-
-
