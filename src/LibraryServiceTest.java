@@ -1,4 +1,3 @@
-package test;
 
 import model.Book;
 import model.Reader;
