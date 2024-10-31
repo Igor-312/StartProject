@@ -8,6 +8,7 @@ import repository.ReaderRepositoryImpl;
 import service.LibraryService;
 import service.LibraryServiceImpl;
 import utils.MyList;
+import service.Security;
 import utils.Validator;
 
 import java.util.Scanner;
@@ -33,6 +34,7 @@ public class MainApp {
 
         BookRepository bookRepository = new BookRepositoryImpl();
         ReaderRepository readerRepository = new ReaderRepositoryImpl();
+
         libraryService = new LibraryServiceImpl(bookRepository, readerRepository);
 
         // книги зарегистрированные в библиотеке
@@ -67,6 +69,7 @@ public class MainApp {
         libraryService.registerReader("Ivan", "ivan@example.com","123", "READER");
         libraryService.registerReader("Maria", "maria@example.com","123", "READER");
 
+        Security security = new Security(libraryService);
 
 
         // сканируем ввод пользователя
@@ -78,9 +81,17 @@ public class MainApp {
                 System.out.print("Пожалуйста, введите ваше имя для авторизации, используя латинские буквы: ");
 
                 String name = scanner.nextLine();
-                currentReader = libraryService.authenticateReader(name);
+                System.out.print("Введите ваш password: ");
+                String password = scanner.nextLine();
+
+                String authenticated = security.authenticateUser(name, password);
+                System.out.println(authenticated);
+                if (authenticated.equals("Аутентификация успешна!")) {
+                    currentReader = libraryService.authenticateReader(name);
+                }
+
                 if (currentReader == null) {
-                    System.out.print("Пользователь не найден. Желаете зарегистрироваться? (да/нет): ");
+                    System.out.print("Пользователь не найден. Желаете зарегистрироваться? (да/нет, yes/no): ");
                     String answer = scanner.nextLine();
                     if (answer.equalsIgnoreCase("да") || answer.equalsIgnoreCase("yes")) {
                         System.out.print("Введите ваш email: ");
@@ -93,7 +104,7 @@ public class MainApp {
                             email = scanner.nextLine();
                         }
                         System.out.print("Введите ваш password: ");
-                        String password = scanner.nextLine();
+                        password = scanner.nextLine();
                         while(!validator.isValidPassword(password)) {
                             System.out.println("Ваш пароль должен содержать минимум 8 символов, хотя бы одна заглавная и " +
                                     "строчная буква, хотя бы одна цифра и один спецсимвол, например: @, #, $.");
@@ -326,9 +337,12 @@ public class MainApp {
     private static void viewBookBorrower(Scanner scanner) {
         System.out.print("Введите название книги: ");
         String title = scanner.nextLine();
+        MyList<Book> books = libraryService.getBooksByName(title);
         Reader borrower = libraryService.getBookBorrower(title);
         if (borrower != null) {
-            System.out.println("Книгу '" + title + "' взял: " + borrower.getName());
+            System.out.println("Книгу ");
+            books.forEach(book -> System.out.println("'" + book.getTitle() + "'"));
+            System.out.println( "взял: " + borrower.getName());
         } else {
             System.out.println("Книга доступна или не найдена.");
         }

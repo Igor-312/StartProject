@@ -40,4 +40,7 @@ public interface LibraryService {
     //Сортировка книг по автору
     void  sortBooksByAuthor();
 
+    Reader getReaderByName(String name);
+
+    MyList<Book> getBooksByName(String title);
 }

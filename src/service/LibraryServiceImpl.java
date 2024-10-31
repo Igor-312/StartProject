@@ -59,7 +59,7 @@ public class LibraryServiceImpl implements LibraryService {
         if (reader != null) {
             MyList<Book> borrowedBooks = reader.getBorrowedBooks();
             for (Book book : borrowedBooks) {
-                if (book.getTitle().equalsIgnoreCase(bookTitle)) {
+                if (book.getTitle().toLowerCase().contains(bookTitle.toLowerCase())) {
                     book.setAvailable(true);
                     book.setBorrowedDate(null);
                     reader.removeBook(book);
@@ -132,7 +132,7 @@ public class LibraryServiceImpl implements LibraryService {
         for (Reader reader : allReaders) {
             MyList<Book> borrowedBooks = reader.getBorrowedBooks();
             for (Book book : borrowedBooks) {
-                if (book.getTitle().equalsIgnoreCase(bookTitle)) {
+                if (book.getTitle().toLowerCase().contains(bookTitle.toLowerCase())) {
                     return reader;
                 }
             }
@@ -150,13 +150,23 @@ public class LibraryServiceImpl implements LibraryService {
         bookRepository.sortByAuthor();
     }
 
+    @Override
+    public Reader getReaderByName(String name) {
+        return readerRepository.getReaderByName(name);
+    }
+
+    @Override
+    public MyList<Book> getBooksByName(String title) {
+        return bookRepository.getBooksByTitle(title);
+    }
+
     /**
      * Вспомогательный метод для поиска книги по названию
      */
     private Book findBookByTitle(String title) {
         MyList<Book> allBooks = bookRepository.getAllBooks();
         for (Book book : allBooks) {
-            if (book.getTitle().equalsIgnoreCase(title)) {
+            if (book.getTitle().toLowerCase().contains(title.toLowerCase())) {
                 return book;
             }
         }
