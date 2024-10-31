@@ -8,6 +8,8 @@ import repository.ReaderRepositoryImpl;
 import service.LibraryService;
 import service.LibraryServiceImpl;
 import utils.MyList;
+import service.Security;
+import utils.Validator;
 
 import java.util.Scanner;
 
@@ -24,12 +26,15 @@ public class MainApp {
 
     private static Reader currentReader;
 
+    private static final Validator validator = new Validator();
+
     public static void main(String[] args) {
 
         // Инициализация репозиториев и сервиса
 
         BookRepository bookRepository = new BookRepositoryImpl();
         ReaderRepository readerRepository = new ReaderRepositoryImpl();
+
         libraryService = new LibraryServiceImpl(bookRepository, readerRepository);
 
         // книги зарегистрированные в библиотеке
@@ -54,16 +59,17 @@ public class MainApp {
         libraryService.addBook("Im Westen nichts Neues", "Erich Maria Remarque");
 
         // Главные администраторы
-        libraryService.registerReader("Bogdan", "bogdan@example.com", "ADMIN");
-        libraryService.registerReader("Igor", "igor@example.com", "ADMIN");
-        libraryService.registerReader("Elena", "elena@example.com", "ADMIN");
-        libraryService.registerReader("Svitlana", "svitlana@example.com", "ADMIN");
+        libraryService.registerReader("Bogdan", "bogdan@example.com", "123", "ADMIN");
+        libraryService.registerReader("Igor", "igor@example.com","123", "ADMIN");
+        libraryService.registerReader("Elena", "elena@example.com","123", "ADMIN");
+        libraryService.registerReader("Svitlana", "svitlana@example.com","123", "ADMIN");
 
         // зарегистрированные пользователи библиотеки
-        libraryService.registerReader("admin", "admin@example.com", "ADMIN");
-        libraryService.registerReader("Ivan", "ivan@example.com", "READER");
-        libraryService.registerReader("Maria", "maria@example.com", "READER");
+        libraryService.registerReader("admin", "admin@example.com","123", "ADMIN");
+        libraryService.registerReader("Ivan", "ivan@example.com","123", "READER");
+        libraryService.registerReader("Maria", "maria@example.com","123", "READER");
 
+        Security security = new Security(libraryService);
 
 
         // сканируем ввод пользователя
@@ -71,18 +77,41 @@ public class MainApp {
 
         while (true) {
             if (currentReader == null) {
-                System.out.println("Добро пожаловать в библиотеку!");
+                System.out.println("Добро пожаловать в библиотеку \"Знания Века\"!");
                 System.out.print("Пожалуйста, введите ваше имя для авторизации, используя латинские буквы: ");
 
                 String name = scanner.nextLine();
-                currentReader = libraryService.authenticateReader(name);
+                System.out.print("Введите ваш password: ");
+                String password = scanner.nextLine();
+
+                String authenticated = security.authenticateUser(name, password);
+                System.out.println(authenticated);
+                if (authenticated.equals("Аутентификация успешна!")) {
+                    currentReader = libraryService.authenticateReader(name);
+                }
+
                 if (currentReader == null) {
-                    System.out.print("Пользователь не найден. Желаете зарегистрироваться? (да/нет): ");
+                    System.out.print("Пользователь не найден. Желаете зарегистрироваться? (да/нет, yes/no): ");
                     String answer = scanner.nextLine();
-                    if (answer.equalsIgnoreCase("да")) {
+                    if (answer.equalsIgnoreCase("да") || answer.equalsIgnoreCase("yes")) {
                         System.out.print("Введите ваш email: ");
                         String email = scanner.nextLine();
-                        libraryService.registerReader(name, email, "READER");
+                        while(!validator.isValidEmail(email)) {
+                            System.out.println("\"Ваш email " +
+                                    "должен содержать латинские буквы, цифры, символ '@' и домен, например, " +
+                                    "'name@example.com'.\" ");
+                            System.out.print("Введите ваш email: ");
+                            email = scanner.nextLine();
+                        }
+                        System.out.print("Введите ваш password: ");
+                        password = scanner.nextLine();
+                        while(!validator.isValidPassword(password)) {
+                            System.out.println("Ваш пароль должен содержать минимум 8 символов, хотя бы одна заглавная и " +
+                                    "строчная буква, хотя бы одна цифра и один спецсимвол, например: @, #, $.");
+                            System.out.print("Введите ваш password: ");
+                            password = scanner.nextLine();
+                        }
+                        libraryService.registerReader(name, email, password, "READER");
                         currentReader = libraryService.authenticateReader(name);
                         System.out.println("Регистрация успешна!");
                     } else {
@@ -180,7 +209,7 @@ public class MainApp {
     // проверяем список книг
     private static void showAllBooks() {
         MyList<Book> books = libraryService.getAllBooks();
-        if (books == null || books.size() == 0) {  // проверка на null или пустой список
+        if (books == null || books.isEmpty()) {  // проверка на null или пустой список
             System.out.println("Список книг пуст.");
             return;
         }
@@ -196,7 +225,7 @@ public class MainApp {
         System.out.print("Введите название книги или его часть: ");
         String title = scanner.nextLine();
         MyList<Book> books = libraryService.searchBooksByTitle(title);
-        if (books.size() > 0) {
+        if (!books.isEmpty()) {
             System.out.println(COLOR_YELLOW + "Найденные книги:" + COLOR_RESET);
             for (Book book : books) {
                 System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
@@ -212,7 +241,7 @@ public class MainApp {
         System.out.print("Введите имя автора или его часть: ");
         String author = scanner.nextLine();
         MyList<Book> books = libraryService.searchBooksByAuthor(author);
-        if (books.size() > 0) {
+        if (!books.isEmpty()) {
             System.out.println(COLOR_YELLOW + "Найденные книги:" + COLOR_RESET);
             for (Book book : books) {
                 System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
@@ -268,7 +297,7 @@ public class MainApp {
     // будет список книг которую взял пользователь
     private static void showMyBooks() {
         MyList<Book> books = libraryService.getBooksBorrowedByReader(currentReader.getName());
-        if (books != null && books.size() > 0) {
+        if (books != null && !books.isEmpty()) {
             System.out.println(COLOR_YELLOW + "Книги, которые вы взяли:" + COLOR_RESET);
             for (Book book : books) {
                 System.out.println(book.getTitle() + " - " + book.getAuthor());
@@ -308,9 +337,12 @@ public class MainApp {
     private static void viewBookBorrower(Scanner scanner) {
         System.out.print("Введите название книги: ");
         String title = scanner.nextLine();
+        MyList<Book> books = libraryService.getBooksByName(title);
         Reader borrower = libraryService.getBookBorrower(title);
         if (borrower != null) {
-            System.out.println("Книгу '" + title + "' взял: " + borrower.getName());
+            System.out.println("Книгу ");
+            books.forEach(book -> System.out.println("'" + book.getTitle() + "'"));
+            System.out.println( "взял: " + borrower.getName());
         } else {
             System.out.println("Книга доступна или не найдена.");
         }

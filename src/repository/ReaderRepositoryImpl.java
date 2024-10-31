@@ -16,8 +16,8 @@ public class ReaderRepositoryImpl implements ReaderRepository {
     }
 
     @Override
-    public Reader addReader(String name, String email, Role role) {
-        Reader reader = new Reader(currentId++, name, email, role);
+    public Reader addReader(String name, String email, String password, Role role) {
+        Reader reader = new Reader(currentId++, name, email, password, role);
         readers.add(reader);
         return reader;
     }

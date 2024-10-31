@@ -33,8 +33,8 @@ public class LibraryServiceTest {
         libraryService = new LibraryServiceImpl(bookRepository, readerRepository);
 
         // Регистрация тестовых пользователей
-        libraryService.registerReader("Alice", "alice@example.com", "READER");
-        libraryService.registerReader("Bob", "bob@example.com", "READER");
+        libraryService.registerReader("Alice", "alice@example.com", "123", "READER");
+        libraryService.registerReader("Bob", "bob@example.com", "123", "READER");
 
         reader1 = libraryService.authenticateReader("Alice");
         reader2 = libraryService.authenticateReader("Bob");

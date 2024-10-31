@@ -4,7 +4,7 @@ import model.Book;
 import utils.MyList;
 
 /**
- * Интерфейс репозитория книг
+ * Интерфейс репозитория для работы с книгами.
  */
 public interface BookRepository {
     // Добавление книги

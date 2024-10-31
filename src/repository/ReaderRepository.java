@@ -8,7 +8,7 @@ import utils.MyList;
 public interface ReaderRepository {
 
     // Добавить читателя
-    Reader addReader(String name, String email, Role role);
+    Reader addReader(String name, String email, String password, Role role);
 
     // Получить читателя по имени
     Reader getReaderByName(String name);

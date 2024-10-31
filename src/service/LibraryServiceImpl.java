@@ -10,7 +10,7 @@ import utils.MyList;
 
 import java.time.LocalDate;
 
-// Реализация сервисного слоя библиотеки
+// Service библиотеки
 public class LibraryServiceImpl implements LibraryService {
     private final BookRepository bookRepository;
     private final ReaderRepository readerRepository;
@@ -59,7 +59,7 @@ public class LibraryServiceImpl implements LibraryService {
         if (reader != null) {
             MyList<Book> borrowedBooks = reader.getBorrowedBooks();
             for (Book book : borrowedBooks) {
-                if (book.getTitle().equalsIgnoreCase(bookTitle)) {
+                if (book.getTitle().toLowerCase().contains(bookTitle.toLowerCase())) {
                     book.setAvailable(true);
                     book.setBorrowedDate(null);
                     reader.removeBook(book);
@@ -88,14 +88,14 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void registerReader(String name, String email, String roleStr) {
+    public void registerReader(String name, String email, String password, String roleStr) {
         Role role;
         try {
             role = Role.valueOf(roleStr.toUpperCase());
         } catch (IllegalArgumentException e) {
             role = Role.READER;
         }
-        readerRepository.addReader(name, email, role);
+        readerRepository.addReader(name, email, password, role);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class LibraryServiceImpl implements LibraryService {
         for (Reader reader : allReaders) {
             MyList<Book> borrowedBooks = reader.getBorrowedBooks();
             for (Book book : borrowedBooks) {
-                if (book.getTitle().equalsIgnoreCase(bookTitle)) {
+                if (book.getTitle().toLowerCase().contains(bookTitle.toLowerCase())) {
                     return reader;
                 }
             }
@@ -150,13 +150,23 @@ public class LibraryServiceImpl implements LibraryService {
         bookRepository.sortByAuthor();
     }
 
+    @Override
+    public Reader getReaderByName(String name) {
+        return readerRepository.getReaderByName(name);
+    }
+
+    @Override
+    public MyList<Book> getBooksByName(String title) {
+        return bookRepository.getBooksByTitle(title);
+    }
+
     /**
      * Вспомогательный метод для поиска книги по названию
      */
     private Book findBookByTitle(String title) {
         MyList<Book> allBooks = bookRepository.getAllBooks();
         for (Book book : allBooks) {
-            if (book.getTitle().equalsIgnoreCase(title)) {
+            if (book.getTitle().toLowerCase().contains(title.toLowerCase())) {
                 return book;
             }
         }
