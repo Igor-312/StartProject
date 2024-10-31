@@ -77,7 +77,8 @@ public class MainApp {
 
         while (true) {
             if (currentReader == null) {
-                System.out.println("Добро пожаловать в библиотеку \"Знания Века\"!");
+                System.out.print("Добро пожаловать в библиотеку ");
+                System.out.println(COLOR_BLUE + "\"Знания Века\"" + COLOR_RESET + "!");
                 System.out.print("Пожалуйста, введите ваше имя для авторизации, используя латинские буквы: ");
 
                 String name = scanner.nextLine();
