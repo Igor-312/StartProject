@@ -22,7 +22,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void addBook(String title, String author) {
-
+        bookRepository.addBook(title, author);
     }
 
     @Override
@@ -68,6 +68,11 @@ public class LibraryServiceImpl implements LibraryService {
             }
         }
         return false;
+    }
+
+    @Override
+    public MyList<Book> getAllAvailableBooks() {
+        return bookRepository.getAllAvailableBooks();
     }
 
     @Override
@@ -145,13 +150,9 @@ public class LibraryServiceImpl implements LibraryService {
         bookRepository.sortByAuthor();
     }
 
-    @Override
-    public MyList<Book> getAllAvailableBooks() {
-        return bookRepository.getAllAvailableBooks();
-    }
-
-
-    //Вспомогательный метод для поиска книги по названию
+    /**
+     * Вспомогательный метод для поиска книги по названию
+     */
     private Book findBookByTitle(String title) {
         MyList<Book> allBooks = bookRepository.getAllBooks();
         for (Book book : allBooks) {
