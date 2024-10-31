@@ -19,6 +19,9 @@ public interface LibraryService {
     //Вернуть книгу в библиотеку
     boolean returnBook(String bookTitle, String readerName);
 
+    //Получить список всех доступных книг
+    MyList<Book> getAllAvailableBooks();
+
     //Получить список всех занятых книг
     MyList<Book> getAllBorrowedBooks();
 
@@ -37,5 +40,4 @@ public interface LibraryService {
     //Сортировка книг по автору
     void  sortBooksByAuthor();
 
-    MyList<Book> getAllAvailableBooks();
 }
