@@ -14,7 +14,5 @@ public interface ReaderRepository {
     Reader getReaderByName(String name);
 
     // Получить список всех читателей
-    MyList<Reader> getReaders();
-
     MyList<Reader> getAllReaders();
 }
