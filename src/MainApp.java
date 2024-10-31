@@ -23,6 +23,7 @@ public class MainApp {
 
     public static void main(String[] args) {
         // Инициализация репозиториев и сервиса
+
         BookRepository bookRepository = new BookRepositoryImpl();
         ReaderRepository readerRepository = new ReaderRepositoryImpl();
         libraryService = new LibraryServiceImpl(bookRepository, readerRepository);
@@ -147,8 +148,13 @@ public class MainApp {
         }
     }
 
+
     private static void showAllBooks() {
         MyList<Book> books = libraryService.getAllBooks();
+        if (books == null || books.size() == 0) {  // проверка на null или пустой список
+            System.out.println("Список книг пуст.");
+            return;
+        }
         System.out.println(COLOR_YELLOW + "Список всех книг:" + COLOR_RESET);
         for (Book book : books) {
             System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " (доступна)" : " (занята)"));
