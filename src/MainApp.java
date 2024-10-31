@@ -25,7 +25,7 @@ public class MainApp {
 
     private static Reader currentReader;
 
-    private static Validator validator = new Validator();
+    private static final Validator validator = new Validator();
 
     public static void main(String[] args) {
 
@@ -198,7 +198,7 @@ public class MainApp {
     // проверяем список книг
     private static void showAllBooks() {
         MyList<Book> books = libraryService.getAllBooks();
-        if (books == null || books.size() == 0) {  // проверка на null или пустой список
+        if (books == null || books.isEmpty()) {  // проверка на null или пустой список
             System.out.println("Список книг пуст.");
             return;
         }
@@ -214,7 +214,7 @@ public class MainApp {
         System.out.print("Введите название книги или его часть: ");
         String title = scanner.nextLine();
         MyList<Book> books = libraryService.searchBooksByTitle(title);
-        if (books.size() > 0) {
+        if (!books.isEmpty()) {
             System.out.println(COLOR_YELLOW + "Найденные книги:" + COLOR_RESET);
             for (Book book : books) {
                 System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
@@ -230,7 +230,7 @@ public class MainApp {
         System.out.print("Введите имя автора или его часть: ");
         String author = scanner.nextLine();
         MyList<Book> books = libraryService.searchBooksByAuthor(author);
-        if (books.size() > 0) {
+        if (!books.isEmpty()) {
             System.out.println(COLOR_YELLOW + "Найденные книги:" + COLOR_RESET);
             for (Book book : books) {
                 System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
@@ -286,7 +286,7 @@ public class MainApp {
     // будет список книг которую взял пользователь
     private static void showMyBooks() {
         MyList<Book> books = libraryService.getBooksBorrowedByReader(currentReader.getName());
-        if (books != null && books.size() > 0) {
+        if (books != null && !books.isEmpty()) {
             System.out.println(COLOR_YELLOW + "Книги, которые вы взяли:" + COLOR_RESET);
             for (Book book : books) {
                 System.out.println(book.getTitle() + " - " + book.getAuthor());
