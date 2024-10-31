@@ -23,4 +23,6 @@ public interface ReaderRepository {
      * Получить список всех читателей
      */
     MyList<Reader> getReaders();
+
+    MyList<Reader> getAllReaders();
 }
