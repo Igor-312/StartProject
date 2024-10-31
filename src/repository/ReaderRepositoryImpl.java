@@ -5,9 +5,7 @@ import model.Role;
 import utils.MyArrayList;
 import utils.MyList;
 
-/**
- * Реализация репозитория читателей
- */
+// Реализация репозитория читателей
 public class ReaderRepositoryImpl implements ReaderRepository {
 
     private final MyList<Reader> readers;
