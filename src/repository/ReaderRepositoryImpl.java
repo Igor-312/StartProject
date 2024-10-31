@@ -33,7 +33,7 @@ public class ReaderRepositoryImpl implements ReaderRepository {
     }
 
     @Override
-    public MyList<Reader> getReaders() {
+    public MyList<Reader> getAllReaders() {
         return readers;
     }
 }
