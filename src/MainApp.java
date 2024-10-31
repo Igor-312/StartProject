@@ -14,10 +14,7 @@ import java.util.Scanner;
 import static view.Color.*;
 
 /**
- * Group: 52-1, "AIT Hi-tech team" GMBH
- *  * Authors: группа №1 Светлана, Елена, Игорь, Богдан.
- *  * Date: 31-10-2024
- * Главный класс приложения Библиотека.
+ * Главный класс приложения
  */
 public class MainApp {
     private static LibraryService libraryService;
@@ -25,55 +22,30 @@ public class MainApp {
     private static Reader currentReader;
 
     public static void main(String[] args) {
-
         // Инициализация репозиториев и сервиса
 
         BookRepository bookRepository = new BookRepositoryImpl();
         ReaderRepository readerRepository = new ReaderRepositoryImpl();
         libraryService = new LibraryServiceImpl(bookRepository, readerRepository);
 
-        // книги зарегистрированные в библиотеке
-        // книги на русском
+        // Добавим несколько книг в библиотеку
         libraryService.addBook("Капитанская дочка", "Пушкин А.С.");
         libraryService.addBook("Война и мир", "Толстой Л.Н.");
         libraryService.addBook("Преступление и наказание", "Достоевский Ф.М.");
         libraryService.addBook("Герой нашего времени", "Лермонтов М.Ю.");
         libraryService.addBook("Мастер и Маргарита", "Булгаков М.А.");
-        // Книги на английском языке
-        libraryService.addBook("To Kill a Mockingbird", "Harper Lee");
-        libraryService.addBook("Pride and Prejudice", "Jane Austen");
-        libraryService.addBook("1984", "George Orwell");
-        libraryService.addBook("The Great Gatsby", "F. Scott Fitzgerald");
-        libraryService.addBook("Moby-Dick", "Herman Melville");
 
-        // Книги на немецком
-        libraryService.addBook("Faust", "Johann Wolfgang von Goethe");
-        libraryService.addBook("Die Verwandlung", "Franz Kafka");
-        libraryService.addBook("Der Steppenwolf", "Hermann Hesse");
-        libraryService.addBook("Die Leiden des jungen Werther", "Johann Wolfgang von Goethe");
-        libraryService.addBook("Im Westen nichts Neues", "Erich Maria Remarque");
-
-        // Главные администраторы
-        libraryService.registerReader("Bogdan", "bogdan@example.com", "ADMIN");
-        libraryService.registerReader("Igor", "igor@example.com", "ADMIN");
-        libraryService.registerReader("Elena", "elena@example.com", "ADMIN");
-        libraryService.registerReader("Svitlana", "svitlana@example.com", "ADMIN");
-
-        // зарегистрированные пользователи библиотеки
+        // Добавим пользователей
         libraryService.registerReader("admin", "admin@example.com", "ADMIN");
         libraryService.registerReader("Ivan", "ivan@example.com", "READER");
         libraryService.registerReader("Maria", "maria@example.com", "READER");
 
-
-
-        // сканируем ввод пользователя
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             if (currentReader == null) {
                 System.out.println("Добро пожаловать в библиотеку!");
-                System.out.print("Пожалуйста, введите ваше имя для авторизации, используя латинские буквы: ");
-
+                System.out.print("Пожалуйста, введите ваше имя для авторизации: ");
                 String name = scanner.nextLine();
                 currentReader = libraryService.authenticateReader(name);
                 if (currentReader == null) {
@@ -177,7 +149,6 @@ public class MainApp {
     }
 
 
-    // проверяем список книг
     private static void showAllBooks() {
         MyList<Book> books = libraryService.getAllBooks();
         if (books == null || books.size() == 0) {  // проверка на null или пустой список
@@ -186,12 +157,10 @@ public class MainApp {
         }
         System.out.println(COLOR_YELLOW + "Список всех книг:" + COLOR_RESET);
         for (Book book : books) {
-            System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
-                    "(доступна)" : " (занята)"));
+            System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " (доступна)" : " (занята)"));
         }
     }
 
-    // проверяем доступность книги даже при частичном вводе названия
     private static void searchBookByTitle(Scanner scanner) {
         System.out.print("Введите название книги или его часть: ");
         String title = scanner.nextLine();
@@ -199,15 +168,13 @@ public class MainApp {
         if (books.size() > 0) {
             System.out.println(COLOR_YELLOW + "Найденные книги:" + COLOR_RESET);
             for (Book book : books) {
-                System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
-                        "(доступна)" : " (занята)"));
+                System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " (доступна)" : " (занята)"));
             }
         } else {
             System.out.println("Книги не найдены.");
         }
     }
 
-    // находим книгу по автору или частичному его название
     private static void searchBookByAuthor(Scanner scanner) {
         System.out.print("Введите имя автора или его часть: ");
         String author = scanner.nextLine();
@@ -215,15 +182,13 @@ public class MainApp {
         if (books.size() > 0) {
             System.out.println(COLOR_YELLOW + "Найденные книги:" + COLOR_RESET);
             for (Book book : books) {
-                System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
-                        "(доступна)" : " (занята)"));
+                System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " (доступна)" : " (занята)"));
             }
         } else {
             System.out.println("Книги не найдены.");
         }
     }
 
-    // вот пользователям книги которую хочет взять
     private static void borrowBook(Scanner scanner) {
         System.out.print("Введите название книги, которую хотите взять: ");
         String title = scanner.nextLine();
@@ -235,7 +200,6 @@ public class MainApp {
         }
     }
 
-    // вот пользователям название книги которую хочет вернуть
     private static void returnBook(Scanner scanner) {
         System.out.print("Введите название книги, которую хотите вернуть: ");
         String title = scanner.nextLine();
@@ -247,7 +211,6 @@ public class MainApp {
         }
     }
 
-    // выводим список доступных книг
     private static void showAvailableBooks() {
         MyList<Book> books = libraryService.getAllAvailableBooks();
         System.out.println(COLOR_YELLOW + "Список доступных книг:" + COLOR_RESET);
@@ -256,7 +219,6 @@ public class MainApp {
         }
     }
 
-    // выводим список занятых книг
     private static void showBorrowedBooks() {
         MyList<Book> books = libraryService.getAllBorrowedBooks();
         System.out.println(COLOR_YELLOW + "Список занятых книг:" + COLOR_RESET);
@@ -265,7 +227,6 @@ public class MainApp {
         }
     }
 
-    // будет список книг которую взял пользователь
     private static void showMyBooks() {
         MyList<Book> books = libraryService.getBooksBorrowedByReader(currentReader.getName());
         if (books != null && books.size() > 0) {
@@ -278,7 +239,6 @@ public class MainApp {
         }
     }
 
-    // добавляем книгу
     private static void addBook(Scanner scanner) {
         System.out.print("Введите название книги: ");
         String title = scanner.nextLine();
@@ -288,7 +248,6 @@ public class MainApp {
         System.out.println(COLOR_GREEN + "Книга успешно добавлена." + COLOR_RESET);
     }
 
-    // редактировать книгу
     private static void editBook(Scanner scanner) {
         System.out.print("Введите название книги, которую хотите отредактировать: ");
         String oldTitle = scanner.nextLine();
@@ -304,7 +263,6 @@ public class MainApp {
         }
     }
 
-    // выводим на печать кто взял книгу название книги
     private static void viewBookBorrower(Scanner scanner) {
         System.out.print("Введите название книги: ");
         String title = scanner.nextLine();
