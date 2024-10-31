@@ -14,7 +14,7 @@ public class MyArrayList<T> implements MyList<T>, Iterable<T> {
 
     @SuppressWarnings("unchecked") // Подавляю предупреждение компилятора о непроверяемом приведении типа
     public MyArrayList() {
-        array = (T[]) new Object[10];
+        array = (T[]) new Object[100];
     }
 
     @SuppressWarnings("unchecked")
