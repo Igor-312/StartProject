@@ -172,4 +172,8 @@ public class LibraryServiceImpl implements LibraryService {
         }
         return null;
     }
+
+    public ReaderRepository getReaderRepository() {
+        return readerRepository;
+    }
 }
