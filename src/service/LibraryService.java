@@ -2,6 +2,7 @@ package service;
 
 import model.Book;
 import model.Reader;
+import repository.ReaderRepository;
 import utils.MyList;
 
 public interface LibraryService {
@@ -43,4 +44,6 @@ public interface LibraryService {
     Reader getReaderByName(String name);
 
     MyList<Book> getBooksByName(String title);
+
+    ReaderRepository getReaderRepository();
 }

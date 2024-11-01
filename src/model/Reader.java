@@ -54,6 +54,7 @@ public class Reader {
 
     /**
      * Добавляет книгу в список взятых книг читателя.
+     *
      * @param book Книга для добавления.
      */
     public void addBook(Book book) {
@@ -62,6 +63,7 @@ public class Reader {
 
     /**
      * Удаляет книгу из списка взятых книг читателя.
+     *
      * @param book Книга для удаления.
      */
     public void removeBook(Book book) {

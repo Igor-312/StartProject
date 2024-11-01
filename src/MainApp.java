@@ -7,6 +7,7 @@ import repository.ReaderRepository;
 import repository.ReaderRepositoryImpl;
 import service.LibraryService;
 import service.LibraryServiceImpl;
+import utils.MyArrayList;
 import utils.MyList;
 import service.Security;
 import utils.Validator;
@@ -17,8 +18,8 @@ import static view.Color.*;
 
 /**
  * Group: 52-1, "AIT Hi-tech team" GMBH
- *  * Authors: группа №1 Светлана, Елена, Игорь, Богдан.
- *  * Date: 31-10-2024
+ * * Authors: группа №1 Светлана, Елена, Игорь, Богдан.
+ * * Date: 31-10-2024
  * Главный класс приложения Библиотека.
  */
 public class MainApp {
@@ -60,14 +61,14 @@ public class MainApp {
 
         // Главные администраторы
         libraryService.registerReader("Bogdan", "bogdan@example.com", "123", "ADMIN");
-        libraryService.registerReader("Igor", "igor@example.com","123", "ADMIN");
-        libraryService.registerReader("Elena", "elena@example.com","123", "ADMIN");
-        libraryService.registerReader("Svitlana", "svitlana@example.com","123", "ADMIN");
+        libraryService.registerReader("Igor", "igor@example.com", "123", "ADMIN");
+        libraryService.registerReader("Elena", "elena@example.com", "123", "ADMIN");
+        libraryService.registerReader("Svitlana", "svitlana@example.com", "123", "ADMIN");
 
         // зарегистрированные пользователи библиотеки
-        libraryService.registerReader("admin", "admin@example.com","123", "ADMIN");
-        libraryService.registerReader("Ivan", "ivan@example.com","123", "READER");
-        libraryService.registerReader("Maria", "maria@example.com","123", "READER");
+        libraryService.registerReader("admin", "admin@example.com", "123", "ADMIN");
+        libraryService.registerReader("Ivan", "ivan@example.com", "123", "READER");
+        libraryService.registerReader("Maria", "maria@example.com", "123", "READER");
 
         Security security = new Security(libraryService);
 
@@ -97,7 +98,7 @@ public class MainApp {
                     if (answer.equalsIgnoreCase("да") || answer.equalsIgnoreCase("yes")) {
                         System.out.print("Введите ваш email: ");
                         String email = scanner.nextLine();
-                        while(!validator.isValidEmail(email)) {
+                        while (!validator.isValidEmail(email)) {
                             System.out.println("\"Ваш email " +
                                     "должен содержать латинские буквы, цифры, символ '@' и домен, например, " +
                                     "'name@example.com'.\" ");
@@ -106,7 +107,7 @@ public class MainApp {
                         }
                         System.out.print("Введите ваш password: ");
                         password = scanner.nextLine();
-                        while(!validator.isValidPassword(password)) {
+                        while (!validator.isValidPassword(password)) {
                             System.out.println("Ваш пароль должен содержать минимум 8 символов, хотя бы одна заглавная и " +
                                     "строчная буква, хотя бы одна цифра и один спецсимвол, например: @, #, $.");
                             System.out.print("Введите ваш password: ");
@@ -215,11 +216,25 @@ public class MainApp {
             return;
         }
         System.out.println(COLOR_YELLOW + "Список всех книг:" + COLOR_RESET);
-        for (Book book : books) {
-            System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
-                    "(доступна)" : " (занята)"));
-        }
+        System.out.println(printBooks(books));
     }
+
+    private static String printBooks(MyList<Book> books) {
+        // Формируем заголовок таблицы с использованием ANSI цвета для визуального выделения
+        StringBuilder result = new StringBuilder(String.format("\u001B[33m%-35s %-35s %-10s\u001B[0m\n", "Title:", "Author:", "Status:"));
+
+        for (Book book : books) {
+            // Преобразуем доступность книги в строку "доступна" или "занята"
+            String availability = book.isAvailable() ? "доступна" : "занята";
+
+            // Добавляем форматированные строки для каждой книги
+            result.append(String.format("%-35s %-35s %-10s\n",
+                    book.getTitle(), book.getAuthor(), availability));
+        }
+
+        return result.toString();
+    }
+
 
     // проверяем доступность книги даже при частичном вводе названия
     private static void searchBookByTitle(Scanner scanner) {
@@ -228,10 +243,7 @@ public class MainApp {
         MyList<Book> books = libraryService.searchBooksByTitle(title);
         if (!books.isEmpty()) {
             System.out.println(COLOR_YELLOW + "Найденные книги:" + COLOR_RESET);
-            for (Book book : books) {
-                System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
-                        "(доступна)" : " (занята)"));
-            }
+            System.out.println(printBooks(books));
         } else {
             System.out.println("Книги не найдены.");
         }
@@ -244,10 +256,7 @@ public class MainApp {
         MyList<Book> books = libraryService.searchBooksByAuthor(author);
         if (!books.isEmpty()) {
             System.out.println(COLOR_YELLOW + "Найденные книги:" + COLOR_RESET);
-            for (Book book : books) {
-                System.out.println(book.getTitle() + " - " + book.getAuthor() + (book.isAvailable() ? " " +
-                        "(доступна)" : " (занята)"));
-            }
+            System.out.println(printBooks(books));
         } else {
             System.out.println("Книги не найдены.");
         }
@@ -281,18 +290,14 @@ public class MainApp {
     private static void showAvailableBooks() {
         MyList<Book> books = libraryService.getAllAvailableBooks();
         System.out.println(COLOR_YELLOW + "Список доступных книг:" + COLOR_RESET);
-        for (Book book : books) {
-            System.out.println(book.getTitle() + " - " + book.getAuthor());
-        }
+        System.out.println(printBooks(books));
     }
 
     // выводим список занятых книг
     private static void showBorrowedBooks() {
         MyList<Book> books = libraryService.getAllBorrowedBooks();
         System.out.println(COLOR_YELLOW + "Список занятых книг:" + COLOR_RESET);
-        for (Book book : books) {
-            System.out.println(book.getTitle() + " - " + book.getAuthor());
-        }
+        System.out.println(printBooks(books));
     }
 
     // будет список книг которую взял пользователь
@@ -300,9 +305,7 @@ public class MainApp {
         MyList<Book> books = libraryService.getBooksBorrowedByReader(currentReader.getName());
         if (books != null && !books.isEmpty()) {
             System.out.println(COLOR_YELLOW + "Книги, которые вы взяли:" + COLOR_RESET);
-            for (Book book : books) {
-                System.out.println(book.getTitle() + " - " + book.getAuthor());
-            }
+            System.out.println(printBooks(books));
         } else {
             System.out.println("У вас нет взятых книг.");
         }
@@ -338,14 +341,22 @@ public class MainApp {
     private static void viewBookBorrower(Scanner scanner) {
         System.out.print("Введите название книги: ");
         String title = scanner.nextLine();
-        MyList<Book> books = libraryService.getBooksByName(title);
-        Reader borrower = libraryService.getBookBorrower(title);
-        if (borrower != null) {
-            System.out.println("Книгу ");
-            books.forEach(book -> System.out.println("'" + book.getTitle() + "'"));
-            System.out.println( "взял: " + borrower.getName());
-        } else {
-            System.out.println("Книга доступна или не найдена.");
+        // Get all readers
+        MyList<Reader> readers = libraryService.getReaderRepository().getAllReaders();
+
+        for (Reader reader : readers) {
+            MyList<Book> borrowedBooks = reader.getBorrowedBooks();
+            MyList<Book> books = new MyArrayList<>();
+
+            for (Book book : borrowedBooks) {
+                if (book.getTitle().toLowerCase().contains(title.toLowerCase())) {
+                    books.add(book);
+                }
+            }
+            if (!books.isEmpty()) {
+                System.out.println(reader.getName() + "  взял:");
+                System.out.println(printBooks(books));
+            }
         }
     }
 }

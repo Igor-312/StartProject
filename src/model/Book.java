@@ -11,12 +11,13 @@ public class Book {
 
     private String title; // Название книги
     private String author; // Автор книги
-    private boolean isAvailable = true; // Доступна ли книга для выдачи
+    private boolean isAvailable; // Доступна ли книга для выдачи
     private LocalDate borrowedDate; // Дата, когда книга была взята
 
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
+        this.isAvailable = true;
     }
 
     // Переопределение метода equals для корректного сравнения объектов Book
@@ -80,6 +81,7 @@ public class Book {
 
     /**
      * Вычисляет количество дней, в течение которых книга находится у читателя.
+     *
      * @return количество дней или 0, если книга не была взята.
      */
     public long daysBorrowed() {
