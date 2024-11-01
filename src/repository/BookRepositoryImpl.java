@@ -29,16 +29,21 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public MyList<Book> getBooksByAuthor(String author) {
-        // Поиск книг по автору
+        // Создаем список для результатов
         MyList<Book> result = new MyArrayList<>();
-        String lowerAuthor = author.toLowerCase();
+        // Приводим ввод пользователя к нижнему регистру и удаляем пробелы
+        String lowerAuthor = author.toLowerCase().trim();
         for (Book book : books) {
-            if (book.getAuthor().toLowerCase().contains(lowerAuthor)) {
+            // Получаем имя автора книги, также приводим к нижнему регистру и удаляем пробелы
+            String bookAuthor = book.getAuthor().toLowerCase().trim();
+            // Сравниваем имена авторов
+            if (bookAuthor.contains(lowerAuthor)) {
                 result.add(book);
             }
         }
         return result;
     }
+
 
     @Override
     public MyList<Book> getBooksByTitle(String title) {
