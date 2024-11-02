@@ -4,6 +4,7 @@ import model.Book;
 import model.Reader;
 import repository.ReaderRepository;
 import utils.MyList;
+import utils.Validator;
 
 public interface LibraryService {
     //Добавить книгу в библиотеку
@@ -46,4 +47,6 @@ public interface LibraryService {
     MyList<Book> getBooksByName(String title);
 
     ReaderRepository getReaderRepository();
+    Security getSecurity();
+    Validator getValidator();
 }

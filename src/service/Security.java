@@ -12,14 +12,7 @@ import model.Reader;
  */
 public class Security {
 
-    private final LibraryService libraryService;
-
-    public Security(LibraryService libraryService) {
-        this.libraryService = libraryService;
-    }
-
-    public String authenticateUser(String name, String password) {
-        Reader reader = libraryService.getReaderByName(name);
+    public String authenticateUser(Reader reader, String password) {
         if (reader == null) {
             return "Пользователь не найден.";
         }
