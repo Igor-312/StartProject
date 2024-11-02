@@ -1,6 +1,7 @@
 package service;
 
 import model.Book;
+import model.Genre;
 import model.Reader;
 import repository.ReaderRepository;
 import utils.MyList;
@@ -8,7 +9,7 @@ import utils.Validator;
 
 public interface LibraryService {
     //Добавить книгу в библиотеку
-    void addBook(String title, String author, int year);
+    void addBook(String title, String author, int year, MyList<Genre> genres);
     //READ
     //Получить список всех книг
     MyList<Book> getAllBooks();

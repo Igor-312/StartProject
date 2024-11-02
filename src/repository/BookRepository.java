@@ -1,6 +1,7 @@
 package repository;
 
 import model.Book;
+import model.Genre;
 import utils.MyList;
 
 /**
@@ -8,7 +9,7 @@ import utils.MyList;
  */
 public interface BookRepository {
     // Добавление книги
-    void addBook(String title, String author, int year);
+    void addBook(String title, String author, int year, MyList<Genre> genres);
 
     // Получение списка всех книг
     MyList<Book> getAllBooks();

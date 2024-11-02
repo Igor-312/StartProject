@@ -2,6 +2,7 @@ package repository;
 
 import db.DB;
 import model.Book;
+import model.Genre;
 import utils.MyArrayList;
 import utils.MyList;
 
@@ -12,16 +13,16 @@ public class BookRepositoryImpl implements BookRepository {
     private final DB db;
 
     public BookRepositoryImpl(DB db) {
-        this.db = new DB();
+        this.db = db;
     }
 
     @Override
-    public void addBook(String title, String author, int year) {
+    public void addBook(String title, String author, int year, MyList<Genre> genres) {
         // Создаем новую книгу и добавляем в список
         int id = db.getBookId() + 1;
-        Book book = new Book(id, title, author, year);
+        Book book = new Book(id, title, author, year, genres);
         db.setBookId(db.getBookId() + 1);
-        getAllBooks().add(book);
+        db.getBooks().add(book);
     }
 
     @Override

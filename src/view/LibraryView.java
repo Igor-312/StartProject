@@ -1,6 +1,7 @@
 package view;
 
 import model.Book;
+import model.Genre;
 import model.Reader;
 import model.Role;
 import service.LibraryService;
@@ -21,20 +22,12 @@ import static view.Color.*;
  */
 public class LibraryView {
 
-    private LibraryService libraryService;
+    private final LibraryService libraryService;
     private Reader currentReader;
 
     public LibraryView(LibraryService libraryService) {
         this.libraryService = libraryService;
         this.currentReader = null;
-    }
-
-    public LibraryService getLibraryService() {
-        return libraryService;
-    }
-
-    public void setLibraryService(LibraryService libraryService) {
-        this.libraryService = libraryService;
     }
 
     // проверяем список книг
@@ -51,15 +44,15 @@ public class LibraryView {
     private String printBooks(MyList<Book> books) {
         // Формируем заголовок таблицы с использованием ANSI цвета для визуального выделения
         StringBuilder result = new StringBuilder(
-                String.format("\u001B[33m%-5s %-38s %-35s %-5s %-10s\u001B[0m\n", "ID", "Title:", "Author:", "Year", "Status:"));
+                String.format("\u001B[33m%-5s %-38s %-35s %-5s %-40s %-10s\u001B[0m\n", "ID", "Title:", "Author:", "Year", "Genre", "Status:"));
 
         for (Book book : books) {
             // Преобразуем доступность книги в строку "доступна" или "занята"
             String availability = book.isAvailable() ? COLOR_GREEN + "доступна" + COLOR_RESET: COLOR_RED + "занята" + COLOR_RESET;
 
             // Добавляем форматированные строки для каждой книги
-            result.append(String.format("%-5d %-38s %-35s %-5d %-10s\n",
-                    book.getId(), book.getTitle(), book.getAuthor(), book.getYear(), availability));
+            result.append(String.format("%-5d %-38s %-35s %-5d %-40s %-10s\n",
+                    book.getId(), book.getTitle(), book.getAuthor(), book.getYear(), book.getDescriptions(), availability));
         }
 
         return result.toString();
@@ -149,7 +142,18 @@ public class LibraryView {
         String author = scanner.nextLine();
         System.out.print("Введите год книги: ");
         int year = scanner.nextInt();
-        libraryService.addBook(title, author, year);
+        System.out.print("Введите жанр книги: ");
+        String genre = scanner.nextLine();
+        MyList<Genre> genres = new MyArrayList<>();
+        while (!genre.equals("0")) {
+            Genre newGenre = Genre.getGenre(genre);
+            if (newGenre != null) {
+                genres.add(newGenre);
+            }
+            System.out.print("Введите жанр книги или 0 для выхода: ");
+            genre = scanner.nextLine();
+        }
+        libraryService.addBook(title, author, year, genres);
         System.out.println(COLOR_GREEN + "Книга успешно добавлена." + COLOR_RESET);
     }
 

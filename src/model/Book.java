@@ -1,7 +1,11 @@
 package model;
 
+import utils.MyArrayList;
+import utils.MyList;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -9,19 +13,27 @@ import java.util.Objects;
  */
 public class Book {
 
-    private int id;
+    private final int id;
     private String title; // Название книги
     private String author; // Автор книги
-    private int year;
+    private final int year;
     private boolean isAvailable; // Доступна ли книга для выдачи
+    private final MyList<Genre> genres;
     private LocalDate borrowedDate; // Дата, когда книга была взята
 
-    public Book(int id, String title, String author, int year) {
+    public Book(int id, String title, String author, int year, MyList<Genre> genres) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.year = year;
+        this.genres = genres;
         this.isAvailable = true;
+    }
+
+    public String getDescriptions () {
+        StringBuilder sb = new StringBuilder();
+        genres.forEach(genre -> sb.append(genre.getDescription()).append(","));
+        return sb.substring(0, sb.length() - 1);
     }
 
     // Переопределение метода equals для корректного сравнения объектов Book
@@ -46,15 +58,13 @@ public class Book {
                 "id = '" + id + '\'' +
                 "title = '" + title + '\'' +
                 ", author = '" + author + '\'' +
+                ", genre = '" + Collections.singletonList(genres) + '\'' +
                 ", isAvailable = " + isAvailable +
                 ", borrowedDate = " + borrowedDate +
                 '}';
     }
 
     // Геттеры и сеттеры
-    public LocalDate getBorrowedDate() {
-        return borrowedDate;
-    }
 
     public void setBorrowedDate(LocalDate borrowedDate) {
         this.borrowedDate = borrowedDate;
@@ -88,16 +98,9 @@ public class Book {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getYear() {
         return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
     }
 
     /**
@@ -108,5 +111,13 @@ public class Book {
     public long daysBorrowed() {
         if (borrowedDate == null) return 0;
         return ChronoUnit.DAYS.between(borrowedDate, LocalDate.now());
+    }
+
+    public static MyList<Genre> createGenres(Genre... genres) {
+        MyList<Genre> listGenre = new MyArrayList<>();
+        for (Genre genre : genres) {
+            listGenre.add(genre);
+        }
+        return listGenre;
     }
 }

@@ -1,6 +1,7 @@
 package service;
 
 import model.Book;
+import model.Genre;
 import model.Reader;
 import model.Role;
 import repository.BookRepository;
@@ -30,8 +31,8 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void addBook(String title, String author, int year) {
-        bookRepository.addBook(title, author, year);
+    public void addBook(String title, String author, int year, MyList<Genre> genres) {
+        bookRepository.addBook(title, author, year, genres);
     }
 
     @Override
