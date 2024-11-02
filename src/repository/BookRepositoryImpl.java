@@ -18,7 +18,9 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public void addBook(String title, String author) {
         // Создаем новую книгу и добавляем в список
-        Book book = new Book(title, author);
+        int id = db.getBookId() + 1;
+        Book book = new Book(id, title, author);
+        db.setBookId(db.getBookId() + 1);
         getAllBooks().add(book);
     }
 

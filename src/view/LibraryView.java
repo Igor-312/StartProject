@@ -50,15 +50,16 @@ public class LibraryView {
 
     private String printBooks(MyList<Book> books) {
         // Формируем заголовок таблицы с использованием ANSI цвета для визуального выделения
-        StringBuilder result = new StringBuilder(String.format("\u001B[33m%-35s %-35s %-10s\u001B[0m\n", "Title:", "Author:", "Status:"));
+        StringBuilder result = new StringBuilder(
+                String.format("\u001B[33m%-5s %-35s %-35s %-10s\u001B[0m\n", "ID", "Title:", "Author:", "Status:"));
 
         for (Book book : books) {
             // Преобразуем доступность книги в строку "доступна" или "занята"
             String availability = book.isAvailable() ? "доступна" : "занята";
 
             // Добавляем форматированные строки для каждой книги
-            result.append(String.format("%-35s %-35s %-10s\n",
-                    book.getTitle(), book.getAuthor(), availability));
+            result.append(String.format("%-5d %-35s %-35s %-10s\n",
+                    book.getId(), book.getTitle(), book.getAuthor(), availability));
         }
 
         return result.toString();

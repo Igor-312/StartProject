@@ -38,32 +38,33 @@ public class DB {
         list.add(new Reader(5, "admin", "admin@example.com", "123", Role.ADMIN));
         list.add(new Reader(6, "Ivan", "ivan@example.com", "123", Role.READER));
         list.add(new Reader(7, "Maria", "maria@example.com", "123", Role.READER));
-
-        readerId = 7;
+        readerId = list.size();
 
         return list;
     }
 
     private MyList<Book> initBooks() {
         MyList<Book> list = new MyArrayList<>();
-        list.add(new Book("Капитанская дочка", "Пушкин А.С."));
-        list.add(new Book("Война и мир", "Толстой Л.Н."));
-        list.add(new Book("Преступление и наказание", "Достоевский Ф.М."));
-        list.add(new Book("Герой нашего времени", "Лермонтов М.Ю."));
-        list.add(new Book("Мастер и Маргарита", "Булгаков М.А."));
+        list.add(new Book(1,"Капитанская дочка", "Пушкин А.С."));
+        list.add(new Book(2,"Война и мир", "Толстой Л.Н."));
+        list.add(new Book(3, "Преступление и наказание", "Достоевский Ф.М."));
+        list.add(new Book(4, "Герой нашего времени", "Лермонтов М.Ю."));
+        list.add(new Book(5, "Мастер и Маргарита", "Булгаков М.А."));
         // Книги на английском языке
-        list.add(new Book("To Kill a Mockingbird", "Harper Lee"));
-        list.add(new Book("Pride and Prejudice", "Jane Austen"));
-        list.add(new Book("1984", "George Orwell"));
-        list.add(new Book("The Great Gatsby", "F. Scott Fitzgerald"));
-        list.add(new Book("Moby-Dick", "Herman Melville"));
+        list.add(new Book(6, "To Kill a Mockingbird", "Harper Lee"));
+        list.add(new Book(7, "Pride and Prejudice", "Jane Austen"));
+        list.add(new Book(8, "1984", "George Orwell"));
+        list.add(new Book(9, "The Great Gatsby", "F. Scott Fitzgerald"));
+        list.add(new Book(10,"Moby-Dick", "Herman Melville"));
 
         // Книги на немецком
-        list.add(new Book("Faust", "Johann Wolfgang von Goethe"));
-        list.add(new Book("Die Verwandlung", "Franz Kafka"));
-        list.add(new Book("Der Steppenwolf", "Hermann Hesse"));
-        list.add(new Book("Die Leiden des jungen Werther", "Johann Wolfgang von Goethe"));
-        list.add(new Book("Im Westen nichts Neues", "Erich Maria Remarque"));
+        list.add(new Book(11, "Faust", "Johann Wolfgang von Goethe"));
+        list.add(new Book(12, "Die Verwandlung", "Franz Kafka"));
+        list.add(new Book(13, "Der Steppenwolf", "Hermann Hesse"));
+        list.add(new Book(14, "Die Leiden des jungen Werther", "Johann Wolfgang von Goethe"));
+        list.add(new Book(15,"Im Westen nichts Neues", "Erich Maria Remarque"));
+        bookId = list.size();
+
         return list;
     }
 
