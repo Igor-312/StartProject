@@ -12,13 +12,15 @@ public class Book {
     private int id;
     private String title; // Название книги
     private String author; // Автор книги
+    private int year;
     private boolean isAvailable; // Доступна ли книга для выдачи
     private LocalDate borrowedDate; // Дата, когда книга была взята
 
-    public Book(int id, String title, String author) {
+    public Book(int id, String title, String author, int year) {
         this.id = id;
         this.title = title;
         this.author = author;
+        this.year = year;
         this.isAvailable = true;
     }
 
@@ -88,6 +90,14 @@ public class Book {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     /**

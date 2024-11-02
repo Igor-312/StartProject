@@ -16,10 +16,10 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public void addBook(String title, String author) {
+    public void addBook(String title, String author, int year) {
         // Создаем новую книгу и добавляем в список
         int id = db.getBookId() + 1;
-        Book book = new Book(id, title, author);
+        Book book = new Book(id, title, author, year);
         db.setBookId(db.getBookId() + 1);
         getAllBooks().add(book);
     }

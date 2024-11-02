@@ -30,8 +30,8 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public void addBook(String title, String author) {
-        bookRepository.addBook(title, author);
+    public void addBook(String title, String author, int year) {
+        bookRepository.addBook(title, author, year);
     }
 
     @Override

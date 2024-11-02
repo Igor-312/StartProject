@@ -8,7 +8,7 @@ import utils.Validator;
 
 public interface LibraryService {
     //Добавить книгу в библиотеку
-    void addBook(String title, String author);
+    void addBook(String title, String author, int year);
     //READ
     //Получить список всех книг
     MyList<Book> getAllBooks();

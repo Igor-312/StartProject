@@ -8,7 +8,7 @@ import utils.MyList;
  */
 public interface BookRepository {
     // Добавление книги
-    void addBook(String title, String author);
+    void addBook(String title, String author, int year);
 
     // Получение списка всех книг
     MyList<Book> getAllBooks();
