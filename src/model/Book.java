@@ -1,7 +1,11 @@
 package model;
 
+import utils.MyArrayList;
+import utils.MyList;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -9,15 +13,33 @@ import java.util.Objects;
  */
 public class Book {
 
+    private final int id;
     private String title; // Название книги
     private String author; // Автор книги
+    private final int year;
+    private int pageCount;
+    private String language;
     private boolean isAvailable; // Доступна ли книга для выдачи
+    private final MyList<Genre> genres;
     private LocalDate borrowedDate; // Дата, когда книга была взята
 
-    public Book(String title, String author) {
+    public Book(int id, String title, String author, int year, int pageCount, String language, MyList<Genre> genres) {
+        this.id = id;
         this.title = title;
         this.author = author;
+        this.year = year;
+        this.pageCount = pageCount;
+        this.language = language;
+        this.genres = genres;
         this.isAvailable = true;
+    }
+
+
+
+    public String getDescriptions () {
+        StringBuilder sb = new StringBuilder();
+        genres.forEach(genre -> sb.append(genre.getDescription()).append(","));
+        return sb.substring(0, sb.length() - 1);
     }
 
     // Переопределение метода equals для корректного сравнения объектов Book
@@ -39,17 +61,19 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
+                "id = '" + id + '\'' +
                 "title = '" + title + '\'' +
                 ", author = '" + author + '\'' +
+                ", year = " + year +
+                ", pageCount = " + pageCount +
+                ", language = '" + language + '\'' +
+                ", genre = '" + Collections.singletonList(genres) + '\'' +
                 ", isAvailable = " + isAvailable +
                 ", borrowedDate = " + borrowedDate +
                 '}';
     }
 
     // Геттеры и сеттеры
-    public LocalDate getBorrowedDate() {
-        return borrowedDate;
-    }
 
     public void setBorrowedDate(LocalDate borrowedDate) {
         this.borrowedDate = borrowedDate;
@@ -79,6 +103,22 @@ public class Book {
         isAvailable = available;
     }
 
+    public int getId() {
+        return id;
+    }
+
+
+    public int getYear() {
+        return year;
+    }
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
     /**
      * Вычисляет количество дней, в течение которых книга находится у читателя.
      *
@@ -87,5 +127,13 @@ public class Book {
     public long daysBorrowed() {
         if (borrowedDate == null) return 0;
         return ChronoUnit.DAYS.between(borrowedDate, LocalDate.now());
+    }
+
+    public static MyList<Genre> createGenres(Genre... genres) {
+        MyList<Genre> listGenre = new MyArrayList<>();
+        for (Genre genre : genres) {
+            listGenre.add(genre);
+        }
+        return listGenre;
     }
 }

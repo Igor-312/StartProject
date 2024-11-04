@@ -1,6 +1,8 @@
 package repository;
 
+import db.DB;
 import model.Book;
+import model.Genre;
 import utils.MyArrayList;
 import utils.MyList;
 
@@ -8,35 +10,46 @@ import utils.MyList;
  * Реализация репозитория книг
  */
 public class BookRepositoryImpl implements BookRepository {
-    private final MyList<Book> books;
+    private final DB db;
 
-    public BookRepositoryImpl() {
-        this.books = new MyArrayList<>();
+    public BookRepositoryImpl(DB db) {
+        this.db = db;
     }
 
     @Override
-    public void addBook(String title, String author) {
+    public void addBook(String title, String author, int year, int pages, String language, MyList<Genre> genres) {
         // Создаем новую книгу и добавляем в список
-        Book book = new Book(title, author);
-        books.add(book);
+        int id = db.getBookId() + 1;
+        Book book = new Book(id, title, author, year, pages, language, genres); // Добавляем language
+        db.setBookId(db.getBookId() + 1);
+        db.getBooks().add(book);
+    }
+
+    @Override
+    public void addBook(String title, String author, int year, MyList<Genre> genres) {
+        // Добавляем книгу с пропуском параметров страниц и языка
+        addBook(title, author, year, 0, "Unknown", genres);
+    }
+
+    @Override
+    public void addBook(String title, String author, int year, int pages, MyList<Genre> genres) {
+        // Добавляем книгу с пропуском параметра языка
+        addBook(title, author, year, pages, "Unknown", genres);
     }
 
     @Override
     public MyList<Book> getAllBooks() {
         // Возвращаем список всех книг
-        return books;
+        return db.getBooks();
     }
 
     @Override
     public MyList<Book> getBooksByAuthor(String author) {
         // Создаем список для результатов
         MyList<Book> result = new MyArrayList<>();
-        // Приводим ввод пользователя к нижнему регистру и удаляем пробелы
         String lowerAuthor = author.toLowerCase().trim();
-        for (Book book : books) {
-            // Получаем имя автора книги, также приводим к нижнему регистру и удаляем пробелы
+        for (Book book : getAllBooks()) {
             String bookAuthor = book.getAuthor().toLowerCase().trim();
-            // Сравниваем имена авторов
             if (bookAuthor.contains(lowerAuthor)) {
                 result.add(book);
             }
@@ -44,13 +57,11 @@ public class BookRepositoryImpl implements BookRepository {
         return result;
     }
 
-
     @Override
     public MyList<Book> getBooksByTitle(String title) {
-        // Поиск книг по названию
         MyList<Book> result = new MyArrayList<>();
         String lowerTitle = title.toLowerCase();
-        for (Book book : books) {
+        for (Book book : getAllBooks()) {
             if (book.getTitle().toLowerCase().contains(lowerTitle)) {
                 result.add(book);
             }
@@ -60,9 +71,8 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public MyList<Book> getAllAvailableBooks() {
-        // Получение списка доступных книг
         MyList<Book> result = new MyArrayList<>();
-        for (Book book : books) {
+        for (Book book : getAllBooks()) {
             if (book.isAvailable()) {
                 result.add(book);
             }
@@ -72,22 +82,19 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void deleteBook(Book book) {
-        // Удаление книги из списка
-        books.remove(book);
+        getAllBooks().remove(book);
     }
 
     @Override
     public void sortByTitle() {
-        // Сортировка книг по названию с использованием пузырьковой сортировки
-        int n = books.size();
+        int n = getAllBooks().size();
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
-                Book book1 = books.get(j);
-                Book book2 = books.get(j + 1);
+                Book book1 = getAllBooks().get(j);
+                Book book2 = getAllBooks().get(j + 1);
                 if (book1.getTitle().compareToIgnoreCase(book2.getTitle()) > 0) {
-                    // Меняем местами книги
-                    books.set(j, book2);
-                    books.set(j + 1, book1);
+                    getAllBooks().set(j, book2);
+                    getAllBooks().set(j + 1, book1);
                 }
             }
         }
@@ -95,16 +102,14 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void sortByAuthor() {
-        // Сортировка книг по автору с использованием пузырьковой сортировки
-        int n = books.size();
+        int n = getAllBooks().size();
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
-                Book book1 = books.get(j);
-                Book book2 = books.get(j + 1);
+                Book book1 = getAllBooks().get(j);
+                Book book2 = getAllBooks().get(j + 1);
                 if (book1.getAuthor().compareToIgnoreCase(book2.getAuthor()) > 0) {
-                    // Меняем местами книги
-                    books.set(j, book2);
-                    books.set(j + 1, book1);
+                    getAllBooks().set(j, book2);
+                    getAllBooks().set(j + 1, book1);
                 }
             }
         }

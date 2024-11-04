@@ -1,12 +1,14 @@
 package service;
 
 import model.Book;
+import model.Genre;
 import model.Reader;
 import model.Role;
 import repository.BookRepository;
 import repository.ReaderRepository;
 import utils.MyArrayList;
 import utils.MyList;
+import utils.Validator;
 
 import java.time.LocalDate;
 
@@ -14,15 +16,23 @@ import java.time.LocalDate;
 public class LibraryServiceImpl implements LibraryService {
     private final BookRepository bookRepository;
     private final ReaderRepository readerRepository;
+    private final Validator validator;
+    private final Security security;
 
-    public LibraryServiceImpl(BookRepository bookRepository, ReaderRepository readerRepository) {
+    public LibraryServiceImpl(
+            BookRepository bookRepository,
+            ReaderRepository readerRepository,
+            Validator validator,
+            Security security) {
         this.bookRepository = bookRepository;
         this.readerRepository = readerRepository;
+        this.validator = validator;
+        this.security = security;
     }
 
     @Override
-    public void addBook(String title, String author) {
-        bookRepository.addBook(title, author);
+    public void addBook(String title, String author, int year, MyList<Genre> genres) {
+        bookRepository.addBook(title, author, year, genres);
     }
 
     @Override
@@ -175,5 +185,17 @@ public class LibraryServiceImpl implements LibraryService {
 
     public ReaderRepository getReaderRepository() {
         return readerRepository;
+    }
+
+    public Validator getValidator() {
+        return validator;
+    }
+
+    public BookRepository getBookRepository() {
+        return bookRepository;
+    }
+
+    public Security getSecurity() {
+        return security;
     }
 }
